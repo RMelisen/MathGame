@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "Ph5o9iZ1o+2r5Piqri99khKslcSJqTXD/UILTCX+0r88hoaSWO/PPKYwDT6yEMyv1zIOvQVDPONdyoyR8L5B8A==",
+  "dgSpecHash": "tc0XsaHpHEIIicI6ePi0DVR16g2uw6L1XNc6o92349PNNYTpxSdpPEKBMy+eW1WWyWupcvW6vLIlh8rvaqDs3w==",
   "success": true,
   "projectFilePath": "/home/rmeli/Documents/Projects/Git Repos/MathGame/MathGame.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/home/rmeli/.nuget/packages/spectre.console/0.49.1/spectre.console.0.49.1.nupkg.sha512"
+  ],
   "logs": []
 }
