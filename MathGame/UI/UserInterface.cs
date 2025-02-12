@@ -73,7 +73,7 @@ internal class UserInterface
             case DifficultyOption.Medium:
                 _DifficultyColor = MEDIUM_DIFFICULTY_COLOR;    
                 _MinValue = 11;
-                _MaxValue = 51;            
+                _MaxValue = 100;            
                 break;
             case DifficultyOption.Hard:
                 _DifficultyColor = HARD_DIFFICULTY_COLOR;
@@ -94,11 +94,15 @@ internal class UserInterface
 
         bool shouldContinue = true;
 
+        int randomNumber1;
+        int randomNumber2;
+        int correctResult;
+
         while(shouldContinue)
         {
-            int randomNumber1 = _RandomNumber.Next(_MinValue, _MaxValue);
-            int randomNumber2 = _RandomNumber.Next(_MinValue, _MaxValue);
-            int correctResult = randomNumber1 + randomNumber2;
+            randomNumber1 = _RandomNumber.Next(_MinValue, _MaxValue);
+            randomNumber2 = _RandomNumber.Next(_MinValue, _MaxValue);
+            correctResult = randomNumber1 + randomNumber2;
 
             AnsiConsole.MarkupLine($"[{_DifficultyColor}]{difficultyOption.ToString()}[/] level calculations :");
             AnsiConsole.WriteLine();
@@ -120,11 +124,15 @@ internal class UserInterface
 
         bool shouldContinue = true;
 
+        int randomNumber1;
+        int randomNumber2;
+        int correctResult;
+
         while(shouldContinue)
         {
-            int randomNumber1 = _RandomNumber.Next(_MinValue, _MaxValue);
-            int randomNumber2 = _RandomNumber.Next(_MinValue, _MaxValue);
-            int correctResult = randomNumber1 - randomNumber2;
+            randomNumber1 = _RandomNumber.Next(_MinValue, _MaxValue);
+            randomNumber2 = _RandomNumber.Next(_MinValue, _MaxValue);
+            correctResult = randomNumber1 - randomNumber2;
 
             AnsiConsole.MarkupLine($"[{_DifficultyColor}]{difficultyOption.ToString()}[/] level calculations :");
             AnsiConsole.WriteLine();
@@ -146,11 +154,15 @@ internal class UserInterface
 
         bool shouldContinue = true;
 
+        int randomNumber1;
+        int randomNumber2;
+        int correctResult;
+
         while(shouldContinue)
         {
-            int randomNumber1 = _RandomNumber.Next(_MinValue, _MaxValue);
-            int randomNumber2 = _RandomNumber.Next(_MinValue, _MaxValue);
-            int correctResult = randomNumber1 * randomNumber2;
+            randomNumber1 = _RandomNumber.Next(_MinValue, _MaxValue);
+            randomNumber2 = _RandomNumber.Next(_MinValue, _MaxValue);
+            correctResult = randomNumber1 * randomNumber2;
 
             AnsiConsole.MarkupLine($"[{_DifficultyColor}]{difficultyOption.ToString()}[/] level calculations :");
             AnsiConsole.WriteLine();
@@ -172,11 +184,22 @@ internal class UserInterface
 
         bool shouldContinue = true;
 
+        int randomNumber1;
+        int randomNumber2;
+        int correctResult;
+
         while(shouldContinue)
         {
-            int randomNumber1 = _RandomNumber.Next(_MinValue, _MaxValue);
-            int randomNumber2 = _RandomNumber.Next(_MinValue, _MaxValue);
-            int correctResult = randomNumber1 / randomNumber2;
+            randomNumber1 = _RandomNumber.Next(_MinValue, _MaxValue);
+            randomNumber2 = _RandomNumber.Next(_MinValue, _MaxValue);
+
+            while (randomNumber1 % randomNumber2 != 0)
+            {
+                randomNumber1 = _RandomNumber.Next(_MinValue, _MaxValue);
+                randomNumber2 = _RandomNumber.Next(_MinValue, _MaxValue);
+            }
+
+            correctResult = randomNumber1 / randomNumber2;
 
             AnsiConsole.MarkupLine($"[{_DifficultyColor}]{difficultyOption.ToString()}[/] level calculations :");
             AnsiConsole.WriteLine();
