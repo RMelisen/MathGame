@@ -17,6 +17,8 @@ internal class UserInterface
 
     #endregion
 
+    internal static List<HistoryItem> historyItemsList= new List<HistoryItem>();
+
     internal string Name;
     private Color _DifficultyColor;
     private int _MinValue;
@@ -25,7 +27,7 @@ internal class UserInterface
     public void MainMenu()
     {
         MenuOptions gamemodeChoice;
-        DifficultyOption difficultyChoice;
+        DifficultyOption difficultyChoice = DifficultyOption.Easy;
 
         AnsiConsole.WriteLine();
         AnsiConsole.MarkupLine($"[Bold {NEUTRAL_INDICATOR_COLOR}]Welcome to MathGame ![/]");
@@ -39,7 +41,9 @@ internal class UserInterface
             AnsiConsole.Clear();
 
             gamemodeChoice = AnsiConsole.Prompt(new SelectionPrompt<MenuOptions>().Title($"Choose a [{NEUTRAL_INDICATOR_COLOR}]gamemode[/]").AddChoices(Enum.GetValues<MenuOptions>()));
-            difficultyChoice = AnsiConsole.Prompt(new SelectionPrompt<DifficultyOption>().Title($"Choose a [{NEUTRAL_INDICATOR_COLOR}]difficulty[/] setting").AddChoices(Enum.GetValues<DifficultyOption>()));
+            
+            if (gamemodeChoice != MenuOptions.ViewHistory)
+                difficultyChoice = AnsiConsole.Prompt(new SelectionPrompt<DifficultyOption>().Title($"Choose a [{NEUTRAL_INDICATOR_COLOR}]difficulty[/] setting").AddChoices(Enum.GetValues<DifficultyOption>()));
 
             switch (gamemodeChoice)
             {
@@ -55,7 +59,8 @@ internal class UserInterface
                 case MenuOptions.Division:                    
                     StartDivisionGamemode(difficultyChoice);
                     break;
-                case MenuOptions.Random:
+                case MenuOptions.ViewHistory:
+                    ViewHistory();
                     break;                    
             }
         }
@@ -109,7 +114,7 @@ internal class UserInterface
 
             int playerResult = AnsiConsole.Ask<int>($"What is the [{NEUTRAL_INDICATOR_COLOR}]result[/] for : [{NEUTRAL_INDICATOR_COLOR}]{randomNumber1} + {randomNumber2}[/] = ");
 
-            if (!CheckResults(playerResult, correctResult))
+            if (!CheckResults(playerResult, correctResult, MenuOptions.Addition))
             {
                 AnsiConsole.Clear();
                 break;
@@ -139,7 +144,7 @@ internal class UserInterface
 
             int playerResult = AnsiConsole.Ask<int>($"What is the [{NEUTRAL_INDICATOR_COLOR}]result[/] for : [{NEUTRAL_INDICATOR_COLOR}]{randomNumber1} - {randomNumber2}[/] = ");
 
-            if (!CheckResults(playerResult, correctResult))
+            if (!CheckResults(playerResult, correctResult, MenuOptions.Soustration))
             {
                 AnsiConsole.Clear();
                 break;
@@ -169,7 +174,7 @@ internal class UserInterface
 
             int playerResult = AnsiConsole.Ask<int>($"What is the [{NEUTRAL_INDICATOR_COLOR}]result[/] for : [{NEUTRAL_INDICATOR_COLOR}]{randomNumber1} * {randomNumber2}[/] = ");
 
-            if (!CheckResults(playerResult, correctResult))
+            if (!CheckResults(playerResult, correctResult, MenuOptions.Multiplication))
             {
                 AnsiConsole.Clear();
                 break;
@@ -206,7 +211,7 @@ internal class UserInterface
 
             int playerResult = AnsiConsole.Ask<int>($"What is the [{NEUTRAL_INDICATOR_COLOR}]result[/] for : [{NEUTRAL_INDICATOR_COLOR}]{randomNumber1} / {randomNumber2}[/] = ");
 
-            if (!CheckResults(playerResult, correctResult))
+            if (!CheckResults(playerResult, correctResult, MenuOptions.Division))
             {
                 AnsiConsole.Clear();
                 break;
@@ -215,8 +220,10 @@ internal class UserInterface
         }
     }
 
-    private bool CheckResults(int playerResult, int correctResult)
+    private bool CheckResults(int playerResult, int correctResult, MenuOptions operationType)
     {
+        historyItemsList.Add(new HistoryItem(correctResult, playerResult, operationType ));
+        
         if (playerResult == correctResult)
         {
             AnsiConsole.MarkupLine($"[{CORRECT_RESULT_COLOR}]Correct ![/]");
@@ -231,5 +238,33 @@ internal class UserInterface
         }
 
         return AnsiConsole.Confirm($"Do you want to [{NEUTRAL_INDICATOR_COLOR}]continue[/] ? : ");
+    }
+
+    private void ViewHistory()
+    {
+        Table historyTable = new Table();
+        historyTable.Border(TableBorder.Rounded);
+
+        // Add columns (Best Practice: Use string literals for column names)
+        historyTable.AddColumn($"[{NEUTRAL_INDICATOR_COLOR}]Operation[/]");
+        historyTable.AddColumn($"[{NEUTRAL_INDICATOR_COLOR}]Your result[/]");
+        historyTable.AddColumn($"[{NEUTRAL_INDICATOR_COLOR}]Expected Result[/]");
+
+        // Populate rows
+        foreach (HistoryItem historyItem in historyItemsList)
+        {
+            if(historyItem.CorrectResult == historyItem.PlayerResult)
+            {
+                historyTable.AddRow(historyItem.OperationType.ToString(), $"[{CORRECT_RESULT_COLOR}]{historyItem.PlayerResult}[/]", $"{historyItem.CorrectResult}");
+            }
+            else
+            {
+                historyTable.AddRow(historyItem.OperationType.ToString(), $"[{WRONG_RESULT_COLOR}]{historyItem.PlayerResult}[/]", $"{historyItem.CorrectResult}");
+            }
+        }
+
+        AnsiConsole.Write(historyTable);
+        AnsiConsole.MarkupLine("Press Any Key to Continue.");
+        Console.ReadKey();
     }
 }

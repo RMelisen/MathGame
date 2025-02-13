@@ -1,3 +1,4 @@
+using System.ComponentModel;
 namespace MathGame.Enums;
 
 internal enum MenuOptions
@@ -6,7 +7,8 @@ internal enum MenuOptions
     Soustration,
     Multiplication,
     Division,
-    Random
+    [Description("View History")]
+    ViewHistory
 }
 
 internal enum DifficultyOption
